@@ -1,0 +1,28 @@
+on: [push, pull_request]
+name: tests
+jobs:
+  screenshooter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        galaxy_version: [release_20.09]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python for BioBlend
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: create screenshots from ${{ matrix.galaxy_version }}
+        run: |
+          wget https://github.com/galaxyproject/galaxy/archive/${{ matrix.galaxy_version }}.tar.gz
+          tar xvzf ${{ matrix.galaxy_version }}.tar.gz | tail
+          cd galaxy-${{ matrix.galaxy_version }}
+          mkdir screenshots
+          GALAXY_TEST_SCREENSHOTS_DIRECTORY=screenshots ./run_tests.sh -selenium lib/galaxy_test/selenium/test_uploads.py::UploadsTestCase::test_rules_example_1_datasets
+          ls -la screenshots
+
+      - name: Cache pip dir
+        uses: actions/cache@v2
+        with:
+          path: ~/.venv
+          key: pip-cache-${{ matrix.galaxy_version }}
