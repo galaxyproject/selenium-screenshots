@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        galaxy_version: [dev]
+        galaxy_version: [release_21.01]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -21,18 +21,9 @@ jobs:
           cd galaxy-${{ matrix.galaxy_version }}
           echo $SCREENSHOTS_DIR
           echo $SCREENSHOTS_DIR
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
-          echo  !!!!
           SCREENSHOTS_DIR=${{ github.workspace }}/screenshots/${TUTORIAL_NAME}
           mkdir -p "$SCREENSHOTS_DIR"
-          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium lib/galaxy_test/selenium/test_uploads.py::UploadsTestCase::test_rules_example_1_datasets
+          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium lib/galaxy_test/selenium/test_uploads.py -- -m gtn_screenshot
           ls -la $SCREENSHOTS_DIR
           echo "SCREENSHOTS_DIR=$SCREENSHOTS_DIR" >> $GITHUB_ENV
 
