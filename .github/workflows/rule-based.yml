@@ -6,14 +6,15 @@ jobs:
     strategy:
       matrix:
         galaxy_version: [release_21.01]
+    env:
+      TUTORIAL_NAME: upload-rules
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.6
-        env:
-          TUTORIAL_NAME: upload-rules
+
       - name: create screenshots from ${{ matrix.galaxy_version }}
         run: |
           wget https://github.com/galaxyproject/galaxy/archive/${{ matrix.galaxy_version }}.tar.gz
@@ -33,7 +34,7 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.TESTS_AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.TESTS_AWS_SECRET_KEY_ID }}
           aws configure set default.region us-east-2
-          aws s3 cp --recursive $SCREENSHOTS_DIR s3://galaxy-tests/galaxy-gtn-screenshots/$TUTORIAL_NAME --acl public-read
+          aws s3 cp --recursive $SCREENSHOTS_DIR s3://galaxy-tests/galaxy-gtn-screenshots/${TUTORIAL_NAME} --acl public-read
           aws s3 ls s3://galaxy-tests
 
       - name: Cache pip dir
