@@ -20,12 +20,9 @@ jobs:
           wget https://github.com/galaxyproject/galaxy/archive/${{ matrix.galaxy_version }}.tar.gz
           tar xvzf ${{ matrix.galaxy_version }}.tar.gz | tail
           cd galaxy-${{ matrix.galaxy_version }}
-          echo $SCREENSHOTS_DIR
-          echo $SCREENSHOTS_DIR
           SCREENSHOTS_DIR=${{ github.workspace }}/screenshots/${TUTORIAL_NAME}
           mkdir -p "$SCREENSHOTS_DIR"
           GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium lib/galaxy_test/selenium/test_uploads.py -- -m gtn_screenshot
-          ls -la $SCREENSHOTS_DIR
           echo "SCREENSHOTS_DIR=$SCREENSHOTS_DIR" >> $GITHUB_ENV
 
       - name: Upload screenshots to S3
