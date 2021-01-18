@@ -6,6 +6,7 @@ jobs:
     strategy:
       matrix:
         galaxy_version: [release_21.01]
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
