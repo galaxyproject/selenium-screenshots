@@ -21,7 +21,7 @@ jobs:
           cd galaxy-${{ matrix.galaxy_version }}
           SCREENSHOTS_DIR=${{ github.workspace }}/screenshots
           mkdir -p "$SCREENSHOTS_DIR"
-          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium -- -m gtn_screenshot -m local
+          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium lib/galaxy_test/selenium -- -m gtn_screenshot -m local
           echo "SCREENSHOTS_DIR=$SCREENSHOTS_DIR" >> $GITHUB_ENV
 
       - name: Upload screenshots to S3
