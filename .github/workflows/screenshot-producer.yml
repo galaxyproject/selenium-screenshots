@@ -21,7 +21,7 @@ jobs:
           cd galaxy-${{ matrix.galaxy_version }}
           SCREENSHOTS_DIR=${{ github.workspace }}/screenshots
           mkdir -p "$SCREENSHOTS_DIR"
-          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium lib/galaxy_test/selenium/test_uploads.py -- -m gtn_screenshot
+          GALAXY_TEST_SCREENSHOTS_DIRECTORY=$SCREENSHOTS_DIR ./run_tests.sh -selenium -- -m gtn_screenshot -m local
           echo "SCREENSHOTS_DIR=$SCREENSHOTS_DIR" >> $GITHUB_ENV
 
       - name: Upload screenshots to S3
@@ -30,7 +30,7 @@ jobs:
           aws configure set aws_access_key_id ${{ secrets.TESTS_AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.TESTS_AWS_SECRET_KEY_ID }}
           aws configure set default.region us-east-2
-          aws s3 cp --recursive $SCREENSHOTS_DIR s3://galaxy-tests/galaxy-gtn-screenshots --acl public-read
+          aws s3 cp --recursive $SCREENSHOTS_DIR s3://galaxy-tests/galaxy-gtn-screenshots/local --acl public-read
           aws s3 ls s3://galaxy-tests
 
       - name: Cache pip dir
